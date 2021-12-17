@@ -48,10 +48,8 @@ body {
 }
 
 .pressed {
+  border:#011F3F 100px;
   box-shadow: 0 0 20px white;
   background-color: grey;
 }
 
-.pickedSquares{
-  box-shadow: 0 0 50px white;
-}
