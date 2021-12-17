@@ -7,6 +7,7 @@ var levelNum = 0;
 var gameOver = false;
 var colorChoices = ["Red","Blue","Yellow","green"];
 var gamePattern =[];
+var userClickPattern = [];
 
 //idk how to use the wrong sound?
 //User pick animations
@@ -14,22 +15,24 @@ $(".btn").click(function (e){
     $(this).fadeOut(250).fadeIn(250);
     var audio = new Audio("/sounds/" + $(this).attr('id') + ".mp3");
     
+    handler(e.target.id);
+
     switch(e.target.id){
         case "red":
             audio.play();
-            console.log("red");
+            
         break;
         case "yellow":
             audio.play();
-            console.log("yellow");
+            
         break;
         case "green":
             audio.play();
-            console.log("green");
+            
         break;
         case "blue":
             audio.play();
-            console.log("blue");
+      
         break;
         default: 
         console.log("swtich ran");
@@ -37,7 +40,13 @@ $(".btn").click(function (e){
     }
 })
 
+function handler(btnColor){
+   var userChoiceColour = btnColor;
+   
+   userClickPattern.push(userChoiceColour);
 
+   console.log(userClickPattern);
+}
 
 //when game starts
 function level(){
