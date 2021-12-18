@@ -4,20 +4,20 @@
 //start of game
 
 var levelNum = 1;
-var gameOver = false;
+var started = false;
 var colorChoices = ["red","blue","yellow","green"];
 var gamePattern =[];
 var userClickPattern = [];
 
 
-$(document).keydown(function(e){
-        if(e.key === "a"){
-            randomSequence();
-            $("h1").text("Level "+levelNum);
-            levelNum++;
+$(document).keydown(function(){
+    if(!started){
+        $("#level-title").text("Level " + levelNum);
+        randomSequence();
+        started = true;
         }
-    
-})
+    }
+);
 
 //idk how to use the wrong sound?
 //User pick animations
@@ -31,7 +31,8 @@ $(".btn").click(function (e){
     
     animatePress(e.target.id);
 
-    checkAnswer(e.target.id);
+
+
 })
 
 function animatePress(currentColor){
@@ -49,6 +50,10 @@ function handler(btnColor){
    var userChoiceColour = btnColor;
    
    userClickPattern.push(userChoiceColour);
+
+   //all checkAnswer() after a user has clicked and chosen their answer, 
+    //passing in the index of the last answer in the user's sequence
+   checkAnswer(userClickPattern.length-1);
     console.log(userClickPattern);
    
 }
@@ -58,22 +63,56 @@ function handler(btnColor){
 
 function checkAnswer(currentLevel){
 
-    if(JSON.stringify(userClickPattern) === JSON.stringify(gamePattern) ) {
+    if(gamePattern[currentLevel] === userClickPattern[currentLevel] ) {
        console.log("success"); 
-    }else{
-        console.log("wrong");
-    }
+       console.log(gamePattern[currentLevel]); 
+       
+       if(userClickPattern.length === gamePattern.length){
+           setTimeout(function (){
+               randomSequence();
+           },1000);
+       }
+ 
 
+
+
+        } else{
+                var wrongSound = new Audio("/sounds/wrong.mp3");
+                wrongSound.play();
+    
+                $("body").addClass("game-over");
+    
+                setTimeout(function (){
+                    $("body").removeClass("game-over");
+                },200);
+    
+                $("#level-title").text("Game Over,Press 'a' key to Retart");
+    
+                console.log("wrong");
+    
+                //disable buttons
+    
+                $(document).keydown(function (e){
+                    if(e.key === "a"){
+                        startOver();
+                        console.log("start over");
+                    }
+                    
+                });
+            }
 }
 
 
 function randomSequence() {
 
+        levelNum++;
         var randomNumber = Math.floor(Math.random() * 4);
-        var randomColor = colorChoices[randomNumber];
-
-        gamePattern.push(randomColor);
+        var randomChosenColour = colorChoices[randomNumber];
+        gamePattern.push(randomChosenColour);
+        
         console.log(gamePattern);
+        $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
+            playSound(randomChosenColour);
 
 
 }
@@ -106,5 +145,11 @@ function playSound(name){
     }
 }
 
+function startOver(){
 
+    $("#level-title").text("Level " + levelNum);
+    levelNum = 1;
+    gamePattern = [];
+    started = true;
 
+}
