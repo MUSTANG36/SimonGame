@@ -2,7 +2,7 @@
 The user then has to copy that particular sequence and once the full sequence has been copied another colored button gets added to that sequence making the sequence longer as each level progresses. The user can make upto as many stages as they are able to.
 
 # Live Demo
-
+https://mustang36.github.io/SimonGame/
 
 # Built With
 * HTML
